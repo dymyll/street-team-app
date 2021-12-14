@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '../../../Components/UI/Icon';
 import styled from 'styled-components';
 import { Dropdown, Image } from 'react-bootstrap';
+import Avatar from 'react-avatar';
 
 const TEMP_IMAGE =
   // eslint-disable-next-line max-len
