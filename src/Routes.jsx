@@ -9,6 +9,8 @@ import { Login } from './Components/Login/Login';
 import { Demo } from './Features/Admin/Audience/GetData';
 import { AudienceView } from './Features/Admin/Audience/views/AudienceView';
 import { ArtistEdit } from './Features/Admin/ArtistEdit/views/ArtistEditPage';
+import { NFTMarketplace } from './NFTs/NFTMarketplace';
+  
 /*
 While we're currently supporting backwards compatability, routing should follow these strategies:
 -Artist (Admin) pages should start with the route /artist, not use path parameters, be wrapped in <SecureViewWrapper userRole="admin">
@@ -27,7 +29,8 @@ export const Routes = () => {
         </Route>
         {/* support backwards compatability for secure/create-action-page (to be removed later on) */}
         <Route
-          exact path={[
+          exact
+          path={[
             '/',
             '/artist/create',
             '/admin/create-fan-magnet',
@@ -44,6 +47,10 @@ export const Routes = () => {
           <SecureViewWrapper userRole="admin">
             <CreateActionPage type="action" />
           </SecureViewWrapper>
+        </Route>
+
+        <Route path="/nft">
+          <NFTMarketplace />
         </Route>
 
         <Route path="/admin/integration">

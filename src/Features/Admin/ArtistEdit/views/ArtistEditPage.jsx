@@ -85,7 +85,7 @@ export const ArtistEdit = () => {
     );
   }
 
-  console.log(`INTEGRAIONTS`,integrations);
+  console.log(`INTEGRATIONS`,integrations);
 
   return (
     <React.Fragment>
