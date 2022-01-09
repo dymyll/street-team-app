@@ -8,6 +8,10 @@ import '../config';
 import * as fcl from '@onflow/fcl';
 import { input } from 'aws-amplify';
 
+// TUTORIAL: https://docs.onflow.org/fcl/tutorials/flow-app-quickstart/
+// Blockchain Explorer: https://testnet.flowscan.org/
+
+
 const NFTButton = styled(Button)`
 width: 100%;
 height: 100%;
@@ -72,7 +76,7 @@ export const NFTMarketplace = () => {
   const sendQuery = async () => {
     const profile = await fcl.query({
       cadence: `
-        import Profile from 0xProfile
+        import Profile from 0x01Profile
 
         pub fun main(address: Address): Profile.ReadOnly? {
           return Profile.read(address)
@@ -91,7 +95,7 @@ export const NFTMarketplace = () => {
   const initAccount = async () => {
     const transactionId = await fcl.mutate({
       cadence: `
-        import Profile from 0xProfile
+        import Profile from 0x01Profile
 
         transaction {
           prepare(account: AuthAccount) {
@@ -119,7 +123,7 @@ export const NFTMarketplace = () => {
   const executeMultipleTransactions = async (inputName,inputInfo,inputAvatar,inputColor) => {
     const transactionId = await fcl.mutate({
       cadence: `
-        import Profile from 0xProfile
+        import Profile from 0x01Profile
 
         transaction(name: String, info: String, avatar: String, color: String) {
           prepare(account: AuthAccount) {
@@ -216,7 +220,7 @@ export const NFTMarketplace = () => {
             <Form.Control
               type="text"
               placeholder="Enter profile name"
-              value={name?? inputName}
+              value={inputName}
               onChange={e => {
                 setInputName(e.target.value);
               }}
@@ -227,7 +231,7 @@ export const NFTMarketplace = () => {
             <Form.Control
               type="text"
               placeholder="Description of profile"
-              value={info?? inputInfo}
+              value={inputInfo}
               onChange={e => {
                 setInputInfo(e.target.value);
               }}
@@ -238,7 +242,7 @@ export const NFTMarketplace = () => {
             <Form.Control
               type="url"
               placeholder="URL of your avatar picture"
-              value={avatar?? inputAvatar}
+              value={inputAvatar}
               onChange={e => {
                 setInputAvatar(e.target.value);
               }}
@@ -249,7 +253,7 @@ export const NFTMarketplace = () => {
             <Form.Control
               type="text"
               placeholder="Choose your ideal color"
-              value={color?? inputColor}
+              value={inputColor}
               onChange={e => {
                 setInputColor(e.target.value);
               }}

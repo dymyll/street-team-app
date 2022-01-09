@@ -11,5 +11,6 @@ const mainNetWallet = 'https://fcl-discovery.onflow.org/authn';
 config({
   'accessNode.api': testNetAccessNode, // Mainnet: "https://access-mainnet-beta.onflow.org"
   'discovery.wallet': testNetWallet, // Mainnet: "https://fcl-discovery.onflow.org/authn"
-  '0xProfile': '0xba1132bc08f82fe2', // The account address where the smart contract lives
+  '0x01Profile': '0xba1132bc08f82fe2', // The account address where the smart contract lives
+//   '0x02Profile': '0x9650bffdda5de18d', // The account address where the smart contract lives
 });
