@@ -5,13 +5,16 @@ import {
   AmplifySignUp,
 } from '@aws-amplify/ui-react';
 import Amplify, { Auth, Hub } from 'aws-amplify';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import awsconfig from '../../aws-exports';
 import { useParams } from 'react-router-dom';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { handleSpotifyAuth } from '../UI/Integrations/Spotify/SpotifyAuth';
 import { handleZoomAuth } from '../UI/Integrations/Zoom/ZoomAuth';
+import { handleDiscordAuth } from '../UI/Integrations/Discord/DiscordAuth';
+import { useCurrentAuthUser } from '../../Features/Admin/CreateActions/hooks/useCurrentAuthUser/useCurrentAuthUser';
+
 
 Amplify.configure(awsconfig);
 
@@ -23,8 +26,11 @@ const Footer = styled.footer({
 export const Login = () => {
   const { userRole, service } = useParams();
   const [authState, setAuthState] = useState();
-  const [userId, setUserId] = useState();
+  // const [userId, setUserId] = useState();
   const [route, setRoute] = useState();
+
+  const currentUser = useCurrentAuthUser();
+  const { userId } = currentUser;
 
   const notArtist = userRole !== 'artist';
   const referrerRoute = '/test/me/out';
@@ -62,10 +68,18 @@ export const Login = () => {
         //after we've handled the Zoom auth, then we can set the route and redirect
         setRouteFromStorage();
       });
-    }
-    else{
-      if(!route){
-      setRouteFromStorage();
+    } else if (service?.includes('discord')) {
+      //discord redirect handling
+      // 'URLSearchParams(window.location.search)' will get url string after the '?' & .get() will get the code value from the url
+      const code = new URLSearchParams(window.location.search).get('code');
+      console.log(`discord code is ${code}`);
+      const discordResponse = handleDiscordAuth(code,userId).then(response => {
+        //after we've handled the Discord auth, then we can set the route and redirect
+        setRouteFromStorage();
+      });
+    } else {
+      if (!route) {
+        setRouteFromStorage();
       }
     }
 
