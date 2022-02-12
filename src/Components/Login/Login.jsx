@@ -12,8 +12,12 @@ import { useParams } from 'react-router-dom';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { handleSpotifyAuth } from '../UI/Integrations/Spotify/SpotifyAuth';
 import { handleZoomAuth } from '../UI/Integrations/Zoom/ZoomAuth';
-import { handleDiscordAuth } from '../UI/Integrations/Discord/DiscordAuth';
+// import { handleDiscordAuth } from '../UI/Integrations/Discord/DiscordAuth';
 import { UserContext } from '../SecureViewWrapper/SecureViewContext';
+import { useCurrentAuthUser } from '../../../src/Features/Admin/CreateActions/hooks/useCurrentAuthUser';
+import { getArtistUser } from '../../graphql/queries';
+import { gql, useMutation, useQuery } from '@apollo/react-hooks';
+
 
 
 Amplify.configure(awsconfig);
@@ -25,14 +29,35 @@ const Footer = styled.footer({
 
 export const Login = () => {
 
-  const user = useContext(UserContext);
-  const userId = { user };
-  console.log('user', user)
-  console.log('userId', userId);
+
+  // const userId = { useCurrentAuthUser };
+
+  // const userContext = useContext(UserContext);
+  // const user = userContext?.userId ?? null;
+  // const userId = user?.username ?? null;
+
+  //   const { data: artistData } = useQuery(gql(getArtistUser), {
+  //     variables: { id: userId },
+  //     skip: !userId,
+  //   });
+
+  //   const data = artistData?.getArtistUser;
+  //   console.log('Login Page Artist Data', data);
+
+
+  // const userAttributes = user?.attributes?? null;
+  // const artistId = userAttributes?.artistId ?? null;
+  // console.log('Login Page userContext', userContext)
+  // console.log('Login Page user', user);
+  // console.log('Login Page attributes', userAttributes);
+  // console.log('Login Page artistId', artistId);
+  // console.log('Login Page userId', userId);
+
+
 
   const { userRole, service } = useParams();
   const [authState, setAuthState] = useState();
-  // const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState();
   const [route, setRoute] = useState();
 
   const notArtist = userRole !== 'artist';
@@ -43,8 +68,8 @@ export const Login = () => {
 
   let { from } = location.state || { from: { pathname: '/' } };
 
-  console.log(location.state);
-  console.log(history);
+  // console.log(location.state);
+  // console.log(history);
 
   const setRouteFromStorage = () => {
     const previousRoute = window.localStorage.getItem('route') || "not-found";
@@ -67,7 +92,7 @@ export const Login = () => {
       // 'URLSearchParams(window.location.search)' will get url string after the '?' & .get() will get the code value from the url
       const code = new URLSearchParams(window.location.search).get('code');
       console.log(`code is ${code}`);
-      const zoomResponse = handleZoomAuth(code,userId).then(response => {
+      const zoomResponse = handleZoomAuth(code).then(response => {
         console.log('zoomResponse', response);
         //after we've handled the Zoom auth, then we can set the route and redirect
         setRouteFromStorage();

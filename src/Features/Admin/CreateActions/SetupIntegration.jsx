@@ -23,7 +23,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SelectList } from '../../../Components/UI/SelectList';
 
-const INPUT_KEYS = ['Amplitude', 'ActiveCampaign', 'Facebook', 'Manychat', 'StreetTeamApi', 'FacebookAdAccount', 'GoogleSheets'];
+const INPUT_KEYS = ['Amplitude', 'ActiveCampaign', 'Facebook', 'Manychat', 'StreetTeamApi', 'FacebookAdAccount', 'GoogleSheets', 'Zoom'];
 
 const ActionContainer = styled(Card)({
   background: ({ theme }) => theme.colors.gray2,
@@ -75,7 +75,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
     Manychat: { apiKey: '', apiUrl: '' },
     StreetTeamApi: { apiKey: '' },
     GoogleSheets: { apiKey: '', apiFaUrl: '' },
-    Zoom: {apiKey: '', apiUrl: '', apiAccountId: '', accessToken: '', refreshToken: '', expiresIn: ''},
+    Zoom: {apiKey: '', apiUrl: '', accessToken: '', refreshToken: '', expiresIn: ''},
   });
 
   const theme = useTheme();
@@ -87,16 +87,16 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
 
   const data = artistData?.getArtistUser;
   const integrations = data?.artist?.integrations?.items;
-  console.log('integrations', integrations);
+  // console.log('integrations', integrations);
 
   useEffect(() => {
     if (integrations) {
-      console.log('formValue is ', formValue);
+      // console.log('formValue is ', formValue);
       let form = formValue;
       let activeInt = {};
       for (let i = 0; i < integrations.length; i++) {
         const item = integrations[i];
-        console.log('item', item);
+        // console.log('item', item);
         form = {
           ...form,
           [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
@@ -106,8 +106,8 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
           [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
         };
       }
-      console.log('setting form value to ', form);
-      console.log('setting active integrations to ', activeInt);
+      // console.log('setting form value to ', form);
+      // console.log('setting active integrations to ', activeInt);
       setActiveIntegrations(activeInt);
       setFormValue(form);
     }
@@ -151,7 +151,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
   };
 
   const generateAndSetApiKey = (key) => {
-    console.log(`key is ${key} and formValue is ${JSON.stringify(formValue)}`);
+    // console.log(`key is ${key} and formValue is ${JSON.stringify(formValue)}`);
     //this needs not be hard coded
     key=`StreetTeamApi`;
     const uuid = uuidv4();
@@ -192,7 +192,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
         receiving_app_id: facebookAppId,
       },
     ]);
-    console.log('config', config);
+    // console.log('config', config);
     navigator.clipboard.writeText(config);
     toast.success("Copied JSON to clipboard!")
   };
@@ -524,10 +524,10 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
                   <ZoomGrantPermissions
                     userId={userId}
                     artistId={artistId}
-                    zoomAccountId={formValue.ZoomAccount?.apiAccountId}
-                    zoomAccessToken={formValue.ZoomAccount?.accessToken}
-                    zoomRefreshToken={formValue.ZoomAccount?.refreshToken}
-                    zoomExpiresIn={formValue.ZoomAccount?.expiresIn}
+                    zoomAuth={formValue.Zoom}
+                    zoomAccessToken={formValue.Zoom?.accessToken}
+                    zoomRefreshToken={formValue.Zoom?.refreshToken}
+                    zoomExpiresIn={formValue.Zoom?.expiresIn}
                   />
                 </Col>
               </Row>

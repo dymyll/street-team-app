@@ -7,7 +7,7 @@ export const useCurrentAuthUser = () => {
     bypassCache: false,
   })
     .then(user => {
-      console.log(`current AuthenticatedUser response`,user)
+      // console.log(`current AuthenticatedUser response`,user)
       if(!artistUserDetails){
         setArtistUserDetails({userId: user.username, artistName: user?.attributes?.name, idToken: user?.signInUserSession?.idToken?.jwtToken});
       }

@@ -66,7 +66,7 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
 
   const initFB = () => {
     const fb = window.FB;
-    console.log('FB SDK initialized');
+    // console.log('FB SDK initialized');
   };
 
   const createScript = () => {

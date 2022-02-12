@@ -1,7 +1,7 @@
 import { getBackendApiUrl } from "../../../../utils/sharedUtils";
 import { useCurrentAuthUser } from "../../../../Features/Admin/CreateActions/hooks/useCurrentAuthUser";
 
-export const handleZoomAuth = async (authCode,userId) => {
+export const handleZoomAuth = async (authCode) => {
   
     console.log(`auth code is `, authCode);
     //handle the auth code from the zoom redirect by calling our backend api
@@ -25,9 +25,13 @@ export const handleZoomAuth = async (authCode,userId) => {
         console.log('yes! we have value');
         window.localStorage.setItem('zoomAccessToken', accessToken);
         window.localStorage.setItem('zoomRefreshToken', refreshToken);
+        window.localStorage.setItem('zoomExpiresIn', expiresIn);
+        // window.localStorage.setItem('artistId', artistId);
+        // window.localStorage.setItem('userId', userId);
+
       }
-      const responseAuth = await saveZoomAuth(accessToken, refreshToken, expiresIn, userId)
-      console.log('zoom',responseAuth);
+      // const responseAuth = await saveZoomAuth(accessToken, refreshToken, expiresIn, artistId, userId)
+      // console.log('zoom',responseAuth);
     }
     catch(err){
         console.error(`getting zoom auth failed due to the following error:`);
@@ -40,7 +44,7 @@ export const handleZoomAuth = async (authCode,userId) => {
     return 'done';
 }
 
-export const saveZoomAuth = async (accessToken, refreshToken, expiresIn, artistId) => {
+export const saveZoomAuth = async (accessToken, refreshToken, expiresIn, artistId, userId) => {
     console.log(`saving zoom integration for artistId`,artistId);
     const postUrl = getBackendApiUrl() + `/zoom-artist-integration`;
     try{
@@ -48,11 +52,12 @@ export const saveZoomAuth = async (accessToken, refreshToken, expiresIn, artistI
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            service: 'zoom',
+            service: "zoom",
             accessToken: accessToken,
             refreshToken: refreshToken,
             expiresIn: expiresIn,
             artistId: artistId,
+            userId: userId,
           }),
         });
         const responseJson = await response.json();

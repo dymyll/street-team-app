@@ -41,7 +41,7 @@ const OrText = styled.p({
 export const ZoomGrantPermissions = ({
   userId,
   artistId,
-  zoomAccountId,
+  zoomAuth,
   zoomAccessToken,
   zoomRefreshToken,
   zoomExpiresIn,
@@ -54,13 +54,73 @@ export const ZoomGrantPermissions = ({
     ZoomAccount: '',
   });
 
+  zoomRefreshToken = zoomRefreshToken ?? localStorage.getItem('zoomRefreshToken') ?? null;
+  zoomAccessToken = zoomAccessToken ?? localStorage.getItem('zoomAccessToken') ?? null;
+  zoomExpiresIn = zoomExpiresIn ?? localStorage.getItem('zoomExpiresIn') ?? null;
+  
+  const zoomStorage = {
+    zoomRefreshToken,
+    zoomAccessToken,
+    zoomExpiresIn,
+    userId,
+    artistId,
+  };
+
   useEffect(() => {
-    if (zoomRefreshToken) {
-      console.log(`setting formValue to ${zoomRefreshToken}`);
-      setFormValue({ ZoomAccount: zoomRefreshToken });
+    // if Zoom auth exists in database, use it
+    if (zoomAuth) {
+      console.log(`setting formValue to ${zoomAuth}`);
+      setFormValue({ ZoomAccount: zoomAuth });
+      console.log(`zoomAuth is: ${zoomAuth}`);
     }
-  }, [zoomAccountId]);
-  console.log(`zoomRefreshToken is: ${zoomRefreshToken}`);
+    // if not, if their Zoom auth exists in local storage, save to database
+    else if (userId && artistId && zoomRefreshToken) {
+      console.log(zoomStorage)
+    }
+  }, [zoomRefreshToken]);
+
+    const updateDatabase = async zoomRefreshToken => {
+      // console.log(`facebookLoginObjectIs`, facebookLoginObject);
+      // TODO this should be a PUT eventually got to change the API first though
+      // these values come from the API response from the fb.login response (response.authResponse)
+      try {
+        if (zoomRefreshToken) {
+          // console.log(`facebookAdAccountId`, facebookAdAccountId);
+          console.log(
+            `updating database with these values`,
+            userId,
+            artistId,
+            zoomAccessToken,
+            zoomRefreshToken,
+            zoomExpiresIn
+          );
+          let updateUrl = `${apiUrl}/zoom-artist-integration`;
+          let updateBody = {
+            userId,
+            artistId,
+            zoomAccessToken,
+            zoomRefreshToken,
+            zoomExpiresIn,
+          };
+          await fetch(updateUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateBody),
+          })
+            .then(rsp => rsp.json())
+            .then(json => {
+              if (json.error && json.error.message) {
+                console.error(json.error.message);
+              } else {
+                console.log(json);
+              }
+            });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
 
   return (
     <div>
@@ -85,7 +145,24 @@ export const ZoomGrantPermissions = ({
           Connect With Zoom
         </Button>
       ) : (
-        <div>Your Zoom Integration: ${formValue.ZoomAccount}</div>
+        <div>
+          <OrContainer>
+            <OrText>You are connected!</OrText>
+          </OrContainer>
+          <Button
+            onClick={() => {
+              //go to the Zoom auth login
+              window.location.href = zoomLoginUrl;
+            }}
+            style={{
+              fontWeight: theme.fontWeights.semibold,
+              fontFamily: theme.fonts.heading,
+              backgroundColor: theme.colors.gray,
+            }}
+          >
+            Re-connect Zoom Account
+          </Button>
+        </div>
       )}
     </div>
   );
