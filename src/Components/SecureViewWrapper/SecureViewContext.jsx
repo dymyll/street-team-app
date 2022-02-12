@@ -33,7 +33,7 @@ export const SecureProvider = ({ children }) => {
     });
   }, []);
 
-  console.log(`userId is now`,userId);
+  // console.log(`userId is now`,userId);
 
   return (
     <UserContext.Provider

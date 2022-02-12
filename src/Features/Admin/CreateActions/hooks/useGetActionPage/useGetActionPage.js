@@ -23,7 +23,7 @@ export const useGetActionPage = () => {
   const [createActionPageError, setCreateActionPageError] = useState();
 
   let { userId, artistName, idToken } = useCurrentAuthUser();
-  console.log(`1-- now the artist is`,artistName);
+  // console.log(`1-- now the artist is`,artistName);
 
   const getArtistByEnduser = `query GetArtistUserActionPageData($id: ID!, $pageRoute: String) {
     getArtistUser(id: $id) {
@@ -121,8 +121,8 @@ export const useGetActionPage = () => {
     variables: { id: userId, pageRoute: 'join' },
     skip: !userId && !artistName,
     onCompleted: userData => {
-      console.log('completed query');
-      console.log(`available data is now `, userData);
+      // console.log('completed query');
+      // console.log(`available data is now `, userData);
     },
   });
 
@@ -137,7 +137,7 @@ export const useGetActionPage = () => {
     };
     // todo this should be done using environment variables, but for now this works -2021-11-11 SG
     let createUrl = `${getBackendApiUrl()}/create-action-page`;
-    console.log(params);
+    // console.log(params);
     try{
       setCreateLoading(true);
     const pagesData = await fetch(createUrl, {
@@ -151,7 +151,7 @@ export const useGetActionPage = () => {
           console.error(json.error.message);
           setCreateActionPageError(json.error.message);
         } else {
-          console.log(`results are`, json);
+          // console.log(`results are`, json);
           refetchUserData();
         }
       });
@@ -168,17 +168,17 @@ export const useGetActionPage = () => {
       userData?.getArtistUser?.artist?.actionPages?.items?.find(
         item => item.pageRoute === 'join'
       );
-    console.log(
-      `response action page data is now---1a`,
-      responseActionPageData
-    );
-    console.log(`userError is now`, userError);
+    // console.log(
+    //   `response action page data is now---1a`,
+    //   responseActionPageData
+    // );
+    // console.log(`userError is now`, userError);
     if (userData && !responseActionPageData && !userError) {
       try {
         // if an action page doesn't exist, create one and pull the data again
         if (!createActionPageError && userId) {
-          console.log('creating new action page');
-          console.log(`1-- action page doesn't exist`,userId,artistName)
+          // console.log('creating new action page');
+          // console.log(`1-- action page doesn't exist`,userId,artistName)
           if(!artistName){
             console.log(`no artist name available, use default of 'artist'`);
             artistName=`artist`;
@@ -296,21 +296,21 @@ export const useGetActionPage = () => {
   let integrations;
 
   if (userLoading || createLoading) {
-    console.log('loading');
+    // console.log('loading');
     return { loading: true };
   }
   if (userError) {
-    console.log('error');
-    console.log(userError);
+    // console.log('error');
+    // console.log(userError);
     return { error: userError };
   }
   if (!userData) {
-    console.log('no user data found');
+    // console.log('no user data found');
   }
   // else if (userData) {
-  console.log(`we should have some userData`);
+  // console.log(`we should have some userData`);
   const enduserInfo = userData?.data?.getArtistUser;
-  console.log(`user data is: `, userData);
+  // console.log(`user data is: `, userData);
   responseActionPageData =
     userData?.getArtistUser?.artist?.actionPages?.items?.find(
       item => item.pageRoute === 'join'
@@ -320,8 +320,8 @@ export const useGetActionPage = () => {
   actionPageId = responseActionPageData?.id;
   integrations = userData?.getArtistUser?.artist?.integrations?.items;
 
-  console.log(`userData`, userData);
-  console.log(`respond --- responseActionPageData`, responseActionPageData);
+  // console.log(`userData`, userData);
+  // console.log(`respond --- responseActionPageData`, responseActionPageData);
   // }
   return {
     loading: userLoading,

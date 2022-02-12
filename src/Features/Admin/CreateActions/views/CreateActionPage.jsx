@@ -57,8 +57,8 @@ export const CreateActionPage = ({ type }) => {
   };
 
   useEffect(() => {
-    console.log(`initial actionPage data set `, actionPageData);
-    console.log(`initial data is ... `, data);
+    // console.log(`initial actionPage data set `, actionPageData);
+    // console.log(`initial data is ... `, data);
     if (!data) setData(actionPageData);
   }, [actionPageData]);
 
@@ -70,7 +70,7 @@ export const CreateActionPage = ({ type }) => {
       Object.keys(actionChecked).length === 0 &&
       !savedDataRestored
     ) {
-      console.log(`initial data is found to be `, data);
+      // console.log(`initial data is found to be `, data);
       const checked = {};
       const values = {};
       const landingPage = {};
@@ -78,7 +78,7 @@ export const CreateActionPage = ({ type }) => {
       const buttonsArray = data?.actionButtons?.items;
       for (let i = 0; i < buttonsArray.length; i++) {
         const element = buttonsArray[i];
-        console.log(element);
+        // console.log(element);
         // handle the email url button
         if (element.serviceAction === 'EmailLink') {
           checked.email = true;
@@ -96,7 +96,7 @@ export const CreateActionPage = ({ type }) => {
           values.starterPack = element.targetURL;
           landingPage.gift = element.targetURL;
           landingIds.gift = element?.id;
-          console.log(`gift element`, element);
+          // console.log(`gift element`, element);
         }
         if (element.serviceAction === 'MusicLink') {
           checked.followMusic = true;

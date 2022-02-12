@@ -48,11 +48,11 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
 
   useEffect(() => {
     if(facebookAdAccountId){
-      console.log(`setting formValue to ${facebookAdAccountId}`)
+      // console.log(`setting formValue to ${facebookAdAccountId}`)
       setFormValue({FacebookAdAccount: facebookAdAccountId})
     }
   }, [facebookAdAccountId])
-  console.log(`facebookAdAccountId is: ${facebookAdAccountId}`)
+  // console.log(`facebookAdAccountId is: ${facebookAdAccountId}`)
   const fbAsyncInit = () => {
     // init the fb sdk client
     const fb = window.FB;
@@ -85,14 +85,14 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
 
   const getFBAdOptionsFromInternalAPI = async authObject => {
     const { userId, accessToken, facebookUserId } = authObject;
-    console.log(`test1 inside user id is`, userId);
+    // console.log(`test1 inside user id is`, userId);
     let fetchUrl = `${apiUrl}/get-available-facebook-ad-accounts?&userId=${userId}`;
     if (accessToken && facebookUserId) {
       // if we have an updated access token, supply it. otherwise we just use the one stored in the database for this artist user
       fetchUrl += `&accessToken=${accessToken}&facebookUserId=${facebookUserId}`;
     }
     try {
-      console.log(`test1 --- calling fetch with`, fetchUrl);
+      // console.log(`test1 --- calling fetch with`, fetchUrl);
       await fetch(fetchUrl, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -100,14 +100,14 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
         .then(rsp => rsp.json())
         .then(json => {
           if (json.error && json.error.message) {
-            console.error(json.error.message);
+            // console.error(json.error.message);
           } else {
-            console.log(`facebookOptionsAre`, json);
+            // console.log(`facebookOptionsAre`, json);
             const returnData = json?.data?.data?.map(item => {
               const returnObject = { id: item.id, name: item.account_id };
               return returnObject;
             });
-            console.log(`return data`, returnData);
+            // console.log(`return data`, returnData);
             setFacebookAdAccounts(returnData);
           }
         });
@@ -122,10 +122,10 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
       setLoading(false);
     }
     if (!facebookPages && userId && artistId) {
-      console.log(`test1`, userId);
+      // console.log(`test1`, userId);
       // we don't really need the artistId here, but if there isn't one, the page isn't really done loading
       getFBAdOptionsFromInternalAPI({ userId }).then(res => {
-        console.log(`internal API resrponse`, res);
+        // console.log(`internal API resrponse`, res);
       });
     }
   }, [userId, artistId]);
@@ -137,7 +137,7 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
         if (!response || !response.authResponse) {
           return;
         }
-        console.log(`got the following response`, response.authResponse);
+        // console.log(`got the following response`, response.authResponse);
         if (!facebookPages) {
           const facebookUserId = response?.authResponse?.userID;
           const accessToken = response?.authResponse?.accessToken;
@@ -147,10 +147,10 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
             input.facebookUserId = facebookUserId;
             input.accessToken = accessToken;
           }
-          console.log(`test1 -- getting FB add accounts with facebook creds`, input);
+          // console.log(`test1 -- getting FB add accounts with facebook creds`, input);
           setLoading(true);
           getFBAdOptionsFromInternalAPI(input).then(res => {
-            console.log(`internal API resrponse`, res);
+            // console.log(`internal API resrponse`, res);
             setLoading(false);
           });
         }
@@ -164,22 +164,22 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
     );
   };
   const updateDatabase = async facebookAdAccountId => {
-    console.log(`facebookLoginObjectIs`, facebookLoginObject);
+    // console.log(`facebookLoginObjectIs`, facebookLoginObject);
     // TODO this should be a PUT eventually got to change the API first though
     // these values come from the API response from the fb.login response (response.authResponse)
     try {
       if (facebookAdAccountId !== '') {
         const facebookAccessToken = facebookLoginObject?.accessToken;
         const facebookUserId = facebookLoginObject?.userID;
-        console.log(`facebookAdAccountId`, facebookAdAccountId);
-        console.log(
-          `updating database with these values`,
-          userId,
-          facebookAccessToken,
-          facebookUserId,
-          facebookAdAccountId,
-          artistId
-        );
+        // console.log(`facebookAdAccountId`, facebookAdAccountId);
+        // console.log(
+        //   `updating database with these values`,
+        //   userId,
+        //   facebookAccessToken,
+        //   facebookUserId,
+        //   facebookAdAccountId,
+        //   artistId
+        // );
         let updateUrl = `${apiUrl}/store-facebook-ad-account-integration`;
         let updateBody = {userId: userId, artistID: artistId, facebookAdAccountId: facebookAdAccountId}
         if (facebookUserId && facebookAccessToken) {
@@ -205,7 +205,7 @@ export const FacebookGrantAdPermissions = ({ userId, artistId, facebookAdAccount
     }
   };
 
-  console.log(`facebookPages`, facebookPages);
+  // console.log(`facebookPages`, facebookPages);
 
   const selectOptions = useMemo(() => {
     const pleaseSelectOption = {

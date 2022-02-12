@@ -87,6 +87,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
 
   const data = artistData?.getArtistUser;
   const integrations = data?.artist?.integrations?.items;
+  console.log('integrations', integrations);
 
   useEffect(() => {
     if (integrations) {
@@ -98,11 +99,11 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
         console.log('item', item);
         form = {
           ...form,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
         };
         activeInt = {
           ...activeInt,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
         };
       }
       console.log('setting form value to ', form);
@@ -127,9 +128,9 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
               serviceName: key,
               ...(formValue[key].apiUrl && {serviceApiUrl: formValue[key]?.apiUrl,}),
               ...(formValue[key].apiKey && {serviceApiKey: formValue[key]?.apiKey,}),
-              ...(formValue[key].accessToken && { serviceAccountId: formValue[key]?.accessToken, }),
-              ...(formValue[key].refreshToken && { serviceAccountId: formValue[key]?.refreshToken, }),
-              ...(formValue[key].expiresIn && {serviceAccountId: formValue[key]?.expiresIn,}),
+              ...(formValue[key].accessToken && { serviceAccessToken: formValue[key]?.accessToken, }),
+              ...(formValue[key].refreshToken && { serviceRefreshToken: formValue[key]?.refreshToken, }),
+              ...(formValue[key].expiresIn && {serviceExpiresIn: formValue[key]?.expiresIn,}),
               ...(activeIntegrations[key]?.id && {
                 id: activeIntegrations[key].id,
               }),

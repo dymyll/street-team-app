@@ -58,7 +58,7 @@ const FormGroup = styled(Form.Group)({
 
 export const TextField = forwardRef(
   ({ label, subText, hideLabel, error, ...props }, ref) => {
-    console.log('props', props);
+    // console.log('props', props);
     return (
       <FormGroup>
         {!hideLabel && <InputLabel>{label}</InputLabel>}

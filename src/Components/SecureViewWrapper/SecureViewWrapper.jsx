@@ -27,7 +27,7 @@ const redirectUrl = currentUrl.split('/').slice(0, 3).join('/') + '/login/';
 
 updatedConfig.oauth.redirectSignIn = redirectUrl;
 updatedConfig.oauth.redirectSignOut = redirectUrl;
-console.log(`redirectUrl`, redirectUrl);
+// console.log(`redirectUrl`, redirectUrl);
 Amplify.configure(updatedConfig);
 
 const Footer = styled.footer({
@@ -102,7 +102,7 @@ export const SecureViewWrapper = ({ userRole, children }) => {
   const [authState, setAuthState] = useState();
   const [userId, setUserId] = useState();
   const context = useContext(UserContext);
-  console.log('hii', context);
+  // console.log('hii', context);
   // const authState = context?.authState;
   // const userId = context?.userId;
 
@@ -119,7 +119,7 @@ export const SecureViewWrapper = ({ userRole, children }) => {
     window.localStorage.setItem('str_cid',searchParams.str_cid);
   }
 
-  console.log('hello from secure wrapper');
+  // console.log('hello from secure wrapper');
 
   const signUpProps = {
     headerText:

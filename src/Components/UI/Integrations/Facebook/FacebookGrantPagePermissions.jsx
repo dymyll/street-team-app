@@ -64,7 +64,7 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
 
   const initFB = () => {
     const fb = window.FB;
-    console.log('FB SDK initialized');
+    // console.log('FB SDK initialized');
   };
 
   const createScript = () => {
@@ -83,14 +83,14 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
 
   const getFBPageOptionsFromInternalAPI = async authObject => {
     const { userId, accessToken, facebookUserId } = authObject;
-    console.log(`test1 inside user id is`, userId);
+    // console.log(`test1 inside user id is`, userId);
     let fetchUrl = `${apiUrl}/get-available-facebook-pages?&userId=${userId}`;
     if (accessToken && facebookUserId) {
       // if we have an updated access token, supply it. otherwise we just use the one stored in the database for this artist user
       fetchUrl += `&accessToken=${accessToken}&facebookUserId=${facebookUserId}`;
     }
     try {
-      console.log(`test1 --- calling fetch with`, fetchUrl);
+      // console.log(`test1 --- calling fetch with`, fetchUrl);
       await fetch(fetchUrl, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -100,12 +100,12 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
           if (json.error && json.error.message) {
             console.error(json.error.message);
           } else {
-            console.log(`facebookOptionsAre`, json);
+            // console.log(`facebookOptionsAre`, json);
             const returnData = json?.data?.data?.map(item => {
               const returnObject = { id: item.id, name: item.name };
               return returnObject;
             });
-            console.log(`return data`, returnData);
+            // console.log(`return data`, returnData);
             setFacebookPages(returnData);
           }
         });
@@ -120,10 +120,10 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
       setLoading(false);
     }
     if (!facebookPages && userId && artistId) {
-      console.log(`test1`, userId);
+      // console.log(`test1`, userId);
       // we don't really need the artistId here, but if there isn't one, the page isn't really done loading
       getFBPageOptionsFromInternalAPI({ userId }).then(res => {
-        console.log(`internal API resrponse`, res);
+        // console.log(`internal API resrponse`, res);
       });
     }
   }, [userId, artistId]);
@@ -135,7 +135,7 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
         if (!response || !response.authResponse) {
           return;
         }
-        console.log(`got the following response`, response.authResponse);
+        // console.log(`got the following response`, response.authResponse);
         if (!facebookPages) {
           const facebookUserId = response?.authResponse?.userID;
           const accessToken = response?.authResponse?.accessToken;
@@ -145,10 +145,10 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
             input.facebookUserId = facebookUserId;
             input.accessToken = accessToken;
           }
-          console.log(`test1 -- getting FB pages with facebook creds`, input);
+          // console.log(`test1 -- getting FB pages with facebook creds`, input);
           setLoading(true);
           getFBPageOptionsFromInternalAPI(input).then(res => {
-            console.log(`internal API resrponse`, res);
+            // console.log(`internal API resrponse`, res);
             setLoading(false);
           });
         }
@@ -162,22 +162,22 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
     );
   };
   const updateDatabase = async facebookPageID => {
-    console.log(`facebookLoginObjectIs`, facebookLoginObject);
+    // console.log(`facebookLoginObjectIs`, facebookLoginObject);
     // TODO this should be a PUT eventually got to change the API first though
     // these values come from the API response from the fb.login response (response.authResponse)
     try {
       if (facebookPageID !== '') {
         const facebookAccessToken = facebookLoginObject?.accessToken;
         const facebookUserId = facebookLoginObject?.userID;
-        console.log(`facebookPageID`, facebookPageID);
-        console.log(
-          `updating database with these values`,
-          userId,
-          facebookAccessToken,
-          facebookUserId,
-          facebookPageID,
-          artistId
-        );
+        // console.log(`facebookPageID`, facebookPageID);
+        // console.log(
+        //   `updating database with these values`,
+        //   userId,
+        //   facebookAccessToken,
+        //   facebookUserId,
+        //   facebookPageID,
+        //   artistId
+        // );
         let updateUrl = `${apiUrl}/store-facebook-page-integration`;
         let updateBody = {userId: userId, artistID: artistId, facebookPageId: facebookPageID}
         if (facebookUserId && facebookAccessToken) {
@@ -194,7 +194,7 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
             if (json.error && json.error.message) {
               console.error(json.error.message);
             } else {
-              console.log(json);
+              // console.log(json);
             }
           });
       }
@@ -203,7 +203,7 @@ export const FacebookGrantPagePermissions = ({ userId, artistId, facebookPageId 
     }
   };
 
-  console.log(`facebookPages`, facebookPages);
+  // console.log(`facebookPages`, facebookPages);
 
   const selectOptions = useMemo(() => {
     const pleaseSelectOption = {
