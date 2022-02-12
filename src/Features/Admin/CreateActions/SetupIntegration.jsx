@@ -86,8 +86,9 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
   });
 
   const data = artistData?.getArtistUser;
+  console.log('artistData', data)
   const integrations = data?.artist?.integrations?.items;
-  // console.log('integrations', integrations);
+  console.log('integrations', integrations);
 
   useEffect(() => {
     if (integrations) {
@@ -192,7 +193,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
         receiving_app_id: facebookAppId,
       },
     ]);
-    // console.log('config', config);
+    console.log('config', config);
     navigator.clipboard.writeText(config);
     toast.success("Copied JSON to clipboard!")
   };

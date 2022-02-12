@@ -75,8 +75,9 @@ export const ZoomGrantPermissions = ({
     }
     // if not, if their Zoom auth exists in local storage, save to database
     else if (userId && artistId && zoomRefreshToken) {
-      console.log(zoomStorage);
-      updateDatabase(zoomStorage);
+      console.log('zoomAuth',zoomAuth)
+      // console.log(zoomStorage);
+      // updateDatabase(zoomStorage);
     }
   }, [zoomRefreshToken]);
 
