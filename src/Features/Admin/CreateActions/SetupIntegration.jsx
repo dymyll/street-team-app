@@ -99,11 +99,11 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
         // console.log('item', item);
         form = {
           ...form,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
         };
         activeInt = {
           ...activeInt,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.serviceAccessToken, refreshToken: item.serviceRefreshToken, expiresIn: item.serviceExpiresIn, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
         };
       }
       // console.log('setting form value to ', form);

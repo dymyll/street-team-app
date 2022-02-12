@@ -67,41 +67,48 @@ export const ZoomGrantPermissions = ({
   };
 
   useEffect(() => {
-    // if Zoom auth exists in database, use it
-    if (zoomAuth) {
+    // if Zoom refresh token exists in database, use it
+    if (zoomAuth.refreshToken) {
       console.log(`setting formValue to ${zoomAuth}`);
       setFormValue({ ZoomAccount: zoomAuth });
-      console.log(`zoomAuth is: ${zoomAuth}`);
+      console.log(`zoomAuth is`,zoomAuth);
     }
     // if not, if their Zoom auth exists in local storage, save to database
     else if (userId && artistId && zoomRefreshToken) {
-      console.log(zoomStorage)
+      console.log(zoomStorage);
+      updateDatabase(zoomStorage);
     }
   }, [zoomRefreshToken]);
 
-    const updateDatabase = async zoomRefreshToken => {
+    const updateDatabase = async data => {
       // console.log(`facebookLoginObjectIs`, facebookLoginObject);
       // TODO this should be a PUT eventually got to change the API first though
       // these values come from the API response from the fb.login response (response.authResponse)
       try {
-        if (zoomRefreshToken) {
+        const {
+          userId,
+          artistId,
+          zoomAccessToken,
+          zoomRefreshToken,
+          zoomExpiresIn,
+        } = data;
+
+        if (userId && artistId && zoomRefreshToken) {
           // console.log(`facebookAdAccountId`, facebookAdAccountId);
           console.log(
             `updating database with these values`,
-            userId,
-            artistId,
-            zoomAccessToken,
-            zoomRefreshToken,
-            zoomExpiresIn
+            data
           );
           let updateUrl = `${apiUrl}/zoom-artist-integration`;
           let updateBody = {
-            userId,
-            artistId,
-            zoomAccessToken,
-            zoomRefreshToken,
-            zoomExpiresIn,
+            userId: userId,
+            artistId: artistId,
+            accessToken: zoomAccessToken,
+            refreshToken: zoomRefreshToken,
+            expiresIn: zoomExpiresIn,
+            service: "zoom",
           };
+
           await fetch(updateUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
