@@ -38,7 +38,14 @@ const OrText = styled.p({
 // login with Zoom to grant ad management permissions
 // TODO -- there's a lot of re-used code here from the FacebookGrantPagePermissions.jsx page that could really be cleaned up into shared compnonents
 // TODO -- out of scope for this dev cylce, but we should create a better user experience with being able to search for accounts, use the friendly account names etc
-export const ZoomGrantPermissions = ({ userId, artistId, zoomAccountId }) => {
+export const ZoomGrantPermissions = ({
+  userId,
+  artistId,
+  zoomAccountId,
+  zoomAccessToken,
+  zoomRefreshToken,
+  zoomExpiresIn,
+}) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
   const [zoomAccount, setZoomAccount] = useState();
@@ -48,42 +55,38 @@ export const ZoomGrantPermissions = ({ userId, artistId, zoomAccountId }) => {
   });
 
   useEffect(() => {
-    if (zoomAccountId) {
-      console.log(`setting formValue to ${zoomAccountId}`);
-      setFormValue({ ZoomAccount: zoomAccountId });
+    if (zoomRefreshToken) {
+      console.log(`setting formValue to ${zoomRefreshToken}`);
+      setFormValue({ ZoomAccount: zoomRefreshToken });
     }
   }, [zoomAccountId]);
-  console.log(`zoomAccountId is: ${zoomAccountId}`);
+  console.log(`zoomRefreshToken is: ${zoomRefreshToken}`);
 
   return (
     <div>
-      {!zoomAccountId ? (
-      <Button
-        onClick={() => {
-          //go to the Zoom auth login
-          window.location.href = zoomLoginUrl;
-        }}
-        style={{
-          fontWeight: theme.fontWeights.semibold,
-          fontFamily: theme.fonts.heading,
-          backgroundColor: theme.colors.secondary,
-        }}
-      >
-        <Icon
-          name="IoVideocam"
-          color="black"
-          size={20}
-          style={{ marginRight: 10 }}
-        />
-        Connect With Zoom
-      </Button>
-      ) :
-        (<div>
-          Your Zoom Integration: ${formValue.ZoomAccount}
-      </div>)
-      
-      }
-
+      {!zoomRefreshToken ? (
+        <Button
+          onClick={() => {
+            //go to the Zoom auth login
+            window.location.href = zoomLoginUrl;
+          }}
+          style={{
+            fontWeight: theme.fontWeights.semibold,
+            fontFamily: theme.fonts.heading,
+            backgroundColor: theme.colors.secondary,
+          }}
+        >
+          <Icon
+            name="IoVideocam"
+            color="black"
+            size={20}
+            style={{ marginRight: 10 }}
+          />
+          Connect With Zoom
+        </Button>
+      ) : (
+        <div>Your Zoom Integration: ${formValue.ZoomAccount}</div>
+      )}
     </div>
   );
 };

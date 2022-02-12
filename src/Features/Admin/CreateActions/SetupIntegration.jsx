@@ -75,7 +75,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
     Manychat: { apiKey: '', apiUrl: '' },
     StreetTeamApi: { apiKey: '' },
     GoogleSheets: { apiKey: '', apiFaUrl: '' },
-    Zoom: {apiKey: '', apiUrl: '', apiAccountId: ''},
+    Zoom: {apiKey: '', apiUrl: '', apiAccountId: '', accessToken: '', refreshToken: '', expiresIn: ''},
   });
 
   const theme = useTheme();
@@ -98,11 +98,11 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
         console.log('item', item);
         form = {
           ...form,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
         };
         activeInt = {
           ...activeInt,
-          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, id: item.id},
+          [item.serviceName]: {apiKey: item.serviceApiKey, apiUrl: item.serviceApiUrl, apiAccountId: item.serviceAccountId, accessToken: item.accessToken, refreshToken: item.refreshToken, expiresIn: item.expiresIn, id: item.id},
         };
       }
       console.log('setting form value to ', form);
@@ -127,7 +127,9 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
               serviceName: key,
               ...(formValue[key].apiUrl && {serviceApiUrl: formValue[key]?.apiUrl,}),
               ...(formValue[key].apiKey && {serviceApiKey: formValue[key]?.apiKey,}),
-              ...(formValue[key].apiAccountId && {serviceAccountId: formValue[key]?.apiAccountId,}),
+              ...(formValue[key].accessToken && { serviceAccountId: formValue[key]?.accessToken, }),
+              ...(formValue[key].refreshToken && { serviceAccountId: formValue[key]?.refreshToken, }),
+              ...(formValue[key].expiresIn && {serviceAccountId: formValue[key]?.expiresIn,}),
               ...(activeIntegrations[key]?.id && {
                 id: activeIntegrations[key].id,
               }),
@@ -521,9 +523,10 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
                   <ZoomGrantPermissions
                     userId={userId}
                     artistId={artistId}
-                    zoomAccountId={
-                      formValue.ZoomAccount?.apiAccountId
-                    }
+                    zoomAccountId={formValue.ZoomAccount?.apiAccountId}
+                    zoomAccessToken={formValue.ZoomAccount?.accessToken}
+                    zoomRefreshToken={formValue.ZoomAccount?.refreshToken}
+                    zoomExpiresIn={formValue.ZoomAccount?.expiresIn}
                   />
                 </Col>
               </Row>

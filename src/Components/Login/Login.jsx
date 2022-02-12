@@ -5,13 +5,16 @@ import {
   AmplifySignUp,
 } from '@aws-amplify/ui-react';
 import Amplify, { Auth, Hub } from 'aws-amplify';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import awsconfig from '../../aws-exports';
 import { useParams } from 'react-router-dom';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { handleSpotifyAuth } from '../UI/Integrations/Spotify/SpotifyAuth';
 import { handleZoomAuth } from '../UI/Integrations/Zoom/ZoomAuth';
+import { handleDiscordAuth } from '../UI/Integrations/Discord/DiscordAuth';
+import { UserContext } from '../SecureViewWrapper/SecureViewContext';
+
 
 Amplify.configure(awsconfig);
 
@@ -21,9 +24,15 @@ const Footer = styled.footer({
 });
 
 export const Login = () => {
+
+  const user = useContext(UserContext);
+  const userId = { user };
+  console.log('user', user)
+  console.log('userId', userId);
+
   const { userRole, service } = useParams();
   const [authState, setAuthState] = useState();
-  const [userId, setUserId] = useState();
+  // const [userId, setUserId] = useState();
   const [route, setRoute] = useState();
 
   const notArtist = userRole !== 'artist';
