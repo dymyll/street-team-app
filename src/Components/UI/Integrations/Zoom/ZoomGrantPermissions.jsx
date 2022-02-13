@@ -41,10 +41,8 @@ const OrText = styled.p({
 export const ZoomGrantPermissions = ({
   userId,
   artistId,
-  zoomAuth,
-  zoomAccessToken,
-  zoomRefreshToken,
-  zoomExpiresIn,
+  streetTeamApi,
+  zoomAuth
 }) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
@@ -53,33 +51,32 @@ export const ZoomGrantPermissions = ({
   const [formValue, setFormValue] = useState({
     ZoomAccount: '',
   });
-
-  zoomRefreshToken = zoomRefreshToken ?? localStorage.getItem('zoomRefreshToken') ?? null;
-  zoomAccessToken = zoomAccessToken ?? localStorage.getItem('zoomAccessToken') ?? null;
-  zoomExpiresIn = zoomExpiresIn ?? localStorage.getItem('zoomExpiresIn') ?? null;
   
-  const zoomStorage = {
-    zoomRefreshToken,
-    zoomAccessToken,
-    zoomExpiresIn,
+  const zoomLocalStorage = {
+    zoomRefreshToken: localStorage.getItem('zoomRefreshToken') ?? null,
+    zoomAccessToken: localStorage.getItem('zoomAccessToken') ?? null,
+    zoomExpiresIn: localStorage.getItem('zoomExpiresIn') ?? null,
     userId,
     artistId,
   };
 
   useEffect(() => {
-    // if Zoom refresh token exists in database, use it
-    if (zoomAuth.refreshToken) {
-      console.log(`setting formValue to ${zoomAuth}`);
-      setFormValue({ ZoomAccount: zoomAuth });
-      console.log(`zoomAuth is`,zoomAuth);
+    // console.log('initial properties', streetTeamApi,zoomAuth)
+
+    // if Zoom refresh token (apiKey) exists in database, use it
+    if (zoomAuth.apiKey) {
+      // console.log(`setting formValue to ${zoomAuth.apiKey}`);
+      setFormValue({ ZoomAccount: zoomAuth.apiKey });
+      console.log(`zoomAuth.apiKey (refreshToken) is`, zoomAuth.apiKey);
     }
+    
     // if not, if their Zoom auth exists in local storage, save to database
-    else if (userId && artistId && zoomRefreshToken) {
+    else if (userId && artistId && zoomLocalStorage.zoomRefreshToken && streetTeamApi.apiKey) {
       console.log('zoomAuth',zoomAuth)
-      // console.log(zoomStorage);
-      // updateDatabase(zoomStorage);
+      // console.log(zoomLocalStorage);
+      updateDatabase(zoomLocalStorage);
     }
-  }, [zoomRefreshToken]);
+  }, [zoomAuth.apiKey]);
 
     const updateDatabase = async data => {
       // console.log(`facebookLoginObjectIs`, facebookLoginObject);
@@ -128,11 +125,19 @@ export const ZoomGrantPermissions = ({
         console.error(err);
       }
     };
+  
+    // if (loading) {
+    //   return (
+    //     <div>
+    //       <Spinner animation="border" role="status" variant="light" />
+    //     </div>
+    //   );
+    // }
 
 
   return (
     <div>
-      {!zoomRefreshToken ? (
+      {!zoomAuth.apiKey ? (
         <Button
           onClick={() => {
             //go to the Zoom auth login
@@ -155,8 +160,9 @@ export const ZoomGrantPermissions = ({
       ) : (
         <div>
           <OrContainer>
-            <OrText>You are connected!</OrText>
-          </OrContainer>
+              <OrText>You are connected!</OrText>
+            </OrContainer>
+            {/* {formValue.ZoomAccount} */}
           <Button
             onClick={() => {
               //go to the Zoom auth login

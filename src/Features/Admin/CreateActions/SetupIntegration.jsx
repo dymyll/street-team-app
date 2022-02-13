@@ -86,13 +86,14 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
   });
 
   const data = artistData?.getArtistUser;
-  console.log('artistData', data)
   const integrations = data?.artist?.integrations?.items;
-  console.log('integrations', integrations);
 
   useEffect(() => {
     if (integrations) {
       // console.log('formValue is ', formValue);
+      // console.log('integrations are', integrations);
+      const zoomIntegration = integrations.find(x => x.serviceName === 'Zoom');
+      console.log('Zoom Integration', zoomIntegration);
       let form = formValue;
       let activeInt = {};
       for (let i = 0; i < integrations.length; i++) {
@@ -525,6 +526,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
                   <ZoomGrantPermissions
                     userId={userId}
                     artistId={artistId}
+                    streetTeamApi={formValue.StreetTeamApi}
                     zoomAuth={formValue.Zoom}
                     zoomAccessToken={formValue.Zoom?.accessToken}
                     zoomRefreshToken={formValue.Zoom?.refreshToken}
