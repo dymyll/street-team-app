@@ -42,11 +42,11 @@ export const ZoomGrantPermissions = ({
   userId,
   artistId,
   streetTeamApi,
-  zoomAuth
+  zoomAccount
 }) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
-  const [zoomAccount, setZoomAccount] = useState();
+  const [zoomAccountObject, setZoomAccount] = useState(zoomAccount);
   const [zoomLoginObject, setZoomLoginObject] = useState();
   const [formValue, setFormValue] = useState({
     ZoomAccount: '',
@@ -61,22 +61,23 @@ export const ZoomGrantPermissions = ({
   };
 
   useEffect(() => {
-    // console.log('initial properties', streetTeamApi,zoomAuth)
+    // console.log('initial properties', streetTeamApi,zoomAccount)
 
     // if Zoom refresh token (apiKey) exists in database, use it
-    if (zoomAuth.apiKey) {
-      // console.log(`setting formValue to ${zoomAuth.apiKey}`);
-      setFormValue({ ZoomAccount: zoomAuth.apiKey });
-      console.log(`zoomAuth.apiKey (refreshToken) is`, zoomAuth.apiKey);
+    if (zoomAccount.apiAccountId) {
+      // console.log(`setting formValue to ${zoomAccount.apiAccountId}`);
+      setFormValue({ ZoomAccount: zoomAccount.apiAccountId });
+      console.log(`zoomAccount.apiAccountId (refreshToken) is`, zoomAccount.apiAccountId);
+      console.log(`zoomAccount.apiAccountId is`, zoomAccount.apiAccountId);
     }
     
     // if not, if their Zoom auth exists in local storage, save to database
     else if (userId && artistId && zoomLocalStorage.zoomRefreshToken && streetTeamApi.apiKey) {
-      console.log('zoomAuth',zoomAuth)
+      console.log('zoomAccount',zoomAccount)
       // console.log(zoomLocalStorage);
-      updateDatabase(zoomLocalStorage);
+      // updateDatabase(zoomLocalStorage);
     }
-  }, [zoomAuth.apiKey]);
+  }, [zoomAccount.apiAccountId]);
 
     const updateDatabase = async data => {
       // console.log(`facebookLoginObjectIs`, facebookLoginObject);
@@ -137,7 +138,7 @@ export const ZoomGrantPermissions = ({
 
   return (
     <div>
-      {!zoomAuth.apiKey ? (
+      {!zoomAccount.apiAccountId ? (
         <Button
           onClick={() => {
             //go to the Zoom auth login

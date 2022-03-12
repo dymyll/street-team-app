@@ -44,29 +44,29 @@ export const handleZoomAuth = async (authCode) => {
     return 'done';
 }
 
-export const saveZoomAuth = async (accessToken, refreshToken, expiresIn, artistId, userId) => {
-    console.log(`saving zoom integration for artistId`,artistId);
-    const postUrl = getBackendApiUrl() + `/zoom-artist-integration`;
-    try{
-        const response = await fetch(postUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            service: "zoom",
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresIn: expiresIn,
-            artistId: artistId,
-            userId: userId,
-          }),
-        });
-        const responseJson = await response.json();
-        // const accessToken = responseJson.accessToken;
-        console.log(responseJson);
-    }
-    catch(err){
-          console.error(`getting zoom auth failed due to the following error:`);
-          console.error(err);
-    }
-    return 'done';
-}
+// export const saveZoomAuth = async (accessToken, refreshToken, expiresIn, artistId, userId) => {
+//     console.log(`saving zoom integration for artistId`,artistId);
+//     const postUrl = getBackendApiUrl() + `/zoom-artist-integration`;
+//     try{
+//         const response = await fetch(postUrl, {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({
+//             service: "zoom",
+//             accessToken: accessToken,
+//             refreshToken: refreshToken,
+//             expiresIn: expiresIn,
+//             artistId: artistId,
+//             userId: userId,
+//           }),
+//         });
+//         const responseJson = await response.json();
+//         // const accessToken = responseJson.accessToken;
+//         console.log(responseJson);
+//     }
+//     catch(err){
+//           console.error(`getting zoom auth failed due to the following error:`);
+//           console.error(err);
+//     }
+//     return 'done';
+// }

@@ -9,10 +9,16 @@ const redirectUri = currentUrl.split('/').slice(0, 3).join('/') + '/login/zoom';
 
 //for scope definition, see https://marketplace.zoom.us/docs/guides/auth/oauth/oauth-scopes/
 const scopes = [
-  "meeting:write",
-  "meeting:read",
-  "webinar:write",
-  "webinar:read"
+  'meeting:write',
+  'meeting:read',
+  'webinar:write',
+  'webinar:read',
+  'user:write:admin',
+  'user:read:admin',
+  'user:read',
+  'user: write',
+  'user_info:read',
+  'user_profile',
 ];
 
 export const zoomLoginUrl = `${authEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes.join(

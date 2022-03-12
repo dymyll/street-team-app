@@ -75,7 +75,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
     Manychat: { apiKey: '', apiUrl: '' },
     StreetTeamApi: { apiKey: '' },
     GoogleSheets: { apiKey: '', apiFaUrl: '' },
-    Zoom: {apiKey: '', apiUrl: '', accessToken: '', refreshToken: '', expiresIn: ''},
+    Zoom: {apiKey: '', apiUrl: '', apiAccountId: '', accessToken: '', refreshToken: '', expiresIn: ''},
   });
 
   const theme = useTheme();
@@ -527,10 +527,7 @@ export const SetupIntegration = ({ userId, artistId, actionPageId, idToken }) =>
                     userId={userId}
                     artistId={artistId}
                     streetTeamApi={formValue.StreetTeamApi}
-                    zoomAuth={formValue.Zoom}
-                    zoomAccessToken={formValue.Zoom?.accessToken}
-                    zoomRefreshToken={formValue.Zoom?.refreshToken}
-                    zoomExpiresIn={formValue.Zoom?.expiresIn}
+                    zoomAccount={formValue.Zoom}
                   />
                 </Col>
               </Row>
