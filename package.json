@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts  --max_old_space_size=8192 build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build:development": "env-cmd -f src/.env.development react-scripts build",
     "build:production": "env-cmd -f src/.env.production react-scripts build",
