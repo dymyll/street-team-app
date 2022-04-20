@@ -15,6 +15,7 @@ import { AudienceView } from './Features/Admin/Audience/views/AudienceView';
 import { ArtistEdit } from './Features/Admin/ArtistEdit/views/ArtistEditPage';
 import { FanMagnetStep2 } from './Features/Enduser/Actions/views/FanMagnetStep2';
 import PasswordlessAuth from './Components/Login/PasswordlessAuth';
+import { ChallengeRankView } from './Features/Admin/Audience/views/ChallengeView';
 /*
 While we're currently supporting backwards compatability, routing should follow these strategies:
 -Artist (Admin) pages should start with the route /artist, not use path parameters, be wrapped in <SecureViewWrapper userRole="admin">
@@ -69,6 +70,10 @@ export const Routes = () => {
           <SecureViewWrapper userRole="admin">
             <ArtistEdit />
           </SecureViewWrapper>
+        </Route>
+
+        <Route path="/challenge/:page?">
+          <ChallengeRankView />
         </Route>
 
         <Route path="/secure/:artist/ranking">
