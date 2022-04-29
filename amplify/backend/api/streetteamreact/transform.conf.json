@@ -3,7 +3,6 @@
     "ElasticsearchWarning": true,
     "StackMapping": {
         "QueryEnduserCompletedActionsByActionButtonResolver": "EnduserCompletedActions",
-        "QueryEnduserPageSubscriptionByReferralEnduserResolver": "EnduserPageSubscription",
-        "QueryEnduserByGlobalIdResolver": "ArtistUser"
+        "QueryEnduserPageSubscriptionByReferralEnduserResolver": "EnduserPageSubscription"
     }
 }
