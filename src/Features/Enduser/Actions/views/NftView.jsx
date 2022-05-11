@@ -16,11 +16,13 @@ export const NftView = () => {
     'service.OpenId.scopes': ['profile']
 });
 const [user, setUser] = useState();
+const [returnedAddress, setReturnedAddress] = useState();
 
 const fclAuthenticate = () => {
   newfcl.authenticate().then(res => {
       console.log("Res: ", res)
       setUser(res);
+      setReturnedAddress(res?.addr);
   });
   newfcl.getAccount();
   console.log('Current User: ', newfcl.currentUser());
@@ -29,8 +31,7 @@ const fclAuthenticate = () => {
 const fclUnauthenticate = async() => {
       newfcl.unauthenticate();
       setUser();
-      const account = await newfcl.getAccount();
-      console.log("Get Account: " , account);
+      setReturnedAddress();
 }
 
 const fclGetCurrentUser = async () => {
@@ -51,7 +52,7 @@ useEffect(() => {
     if(!user){
         fclAuthenticate();
     }
-}, [user]);
+}, [user, returnedAddress]);
 
   return (
     <>
@@ -65,6 +66,16 @@ useEffect(() => {
         }
         <button onClick={fclGetCurrentUser}>Get User Info</button>
         <button onClick={fclSubscribeUser}>Subscribe</button>
+
+        <form onSubmit={() => {console.log("Sending address...", returnedAddress)}}>
+        <label>
+          Wallet Address:
+          <input type="text" value={returnedAddress} hidden={!returnedAddress}/>
+        </label>
+        {returnedAddress ? 
+        <input type="submit" value="Submit" /> : null
+        }
+      </form>
       {/* <button onClick={fclUnauthenticate}> Sign Out Flow</button> */}
     </>
   );
