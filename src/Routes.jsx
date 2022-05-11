@@ -7,6 +7,7 @@ import { Ranking } from './Features/Enduser/Ranking/views/Ranking';
 import { UserProfile } from './Features/Enduser/UserProfile/views/UserProfile';
 import { Rewards } from './Features/Enduser/Rewards/views/Rewards';
 import { LandingPage } from './Features/Enduser/Actions/views/LandingPage';
+import { NftView } from './Features/Enduser/Actions/views/NftView';
 import { CreateActionPage } from './Features/Admin/CreateActions/views/CreateActionPage';
 import { Login } from './Components/Login/Login';
 import { Demo } from './Features/Admin/Audience/GetData';
@@ -89,6 +90,11 @@ export const Routes = () => {
         <Route path="/secure/:artist/:page?">
           <SecureViewWrapper userRole="enduser">
             <ActionsView />
+          </SecureViewWrapper>
+        </Route>
+        <Route path="/artist/test/nft">
+          <SecureViewWrapper userRole="enduser">
+            <NftView />
           </SecureViewWrapper>
         </Route>
         <Route path="/:artist/:page?/feedback">
